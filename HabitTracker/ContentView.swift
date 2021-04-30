@@ -12,14 +12,25 @@ struct ContentView: View {
     @State var isPresentingAddNewActivityForm = false
     
     var body: some View {
-    
-        Button(action: {
-          isPresentingAddNewActivityForm = true
-        }, label: {
-            Text("add new activity")
-        }).sheet(isPresented: $isPresentingAddNewActivityForm, onDismiss: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=On Dismiss@*/{ }/*@END_MENU_TOKEN@*/, content: {
-            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
-        })
+        NavigationView {
+                List {
+                    ForEach(activities.data) { activity in
+                        Text("\(activity.name)")
+                    }
+                }
+            .navigationBarTitle("Activities", displayMode: .inline)
+            .toolbar(content: {
+                Button(action: {
+                  isPresentingAddNewActivityForm = true
+                }, label: {
+                    Image(systemName: "plus")
+                }).sheet(isPresented: $isPresentingAddNewActivityForm, onDismiss: {}, content: {
+                    AddNewActivityView(activities: activities, isPresentingAddNewActivityForm: $isPresentingAddNewActivityForm)
+                })
+            })
+        }
+        
+      
     }
 }
 
